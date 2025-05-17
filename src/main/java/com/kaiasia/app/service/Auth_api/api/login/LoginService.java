@@ -4,9 +4,14 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.kaiasia.app.core.utils.ApiConstant;
+import com.kaiasia.app.service.Auth_api.model.request.Auth0Request;
 import com.kaiasia.app.service.Auth_api.model.request.Auth1Request;
+import com.kaiasia.app.service.Auth_api.model.request.Auth3Request;
 import com.kaiasia.app.service.Auth_api.model.response.Auth0Response;
+import com.kaiasia.app.service.Auth_api.model.validation.Auth0Validation;
+import com.kaiasia.app.service.Auth_api.model.validation.Auth3Validation;
 import com.kaiasia.app.service.Auth_api.utils.ApiUtils;
+import com.kaiasia.app.service.Auth_api.utils.ServiceUltil;
 import ms.apiclient.model.ApiBody;
 import ms.apiclient.model.ApiError;
 import ms.apiclient.model.ApiRequest;
@@ -58,18 +63,7 @@ public class LoginService  extends BaseService{
 
     @KaiMethod(name = "login",type = Register.VALIDATE)
     public ApiError validate(ApiRequest req) throws Exception {
-
-
-        Enquiry enquiry = objectMapper.convertValue(getEnquiry(req), Enquiry.class);
-        if(StringUtils.isBlank(enquiry.getUsername())){
-            return apiErrorUtils.getError("706", new String[]{"#userName"});
-        }
-        if(StringUtils.isBlank(enquiry.getPassword())){
-            return apiErrorUtils.getError("706", new String[]{"#password"});
-        }
-
-        return new ApiError(ApiError.OK_CODE, ApiError.OK_DESC);
-
+		return ServiceUltil.validate(req, Auth0Request.class, apiErrorUtils, "ENQUIRY", Auth0Validation.class);
     }
     
     @KaiMethod(name = "login")

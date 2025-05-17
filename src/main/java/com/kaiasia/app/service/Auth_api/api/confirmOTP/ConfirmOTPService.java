@@ -1,4 +1,4 @@
-package com.kaiasia.app.service.Auth_api.api.api_confirmOTP;
+package com.kaiasia.app.service.Auth_api.api.confirmOTP;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kaiasia.app.core.job.BaseService;

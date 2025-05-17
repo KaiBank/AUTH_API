@@ -1,4 +1,4 @@
-package com.kaiasia.app.service.Auth_api.api.api_getOTP;
+package com.kaiasia.app.service.Auth_api.api.getOTP;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

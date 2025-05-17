@@ -17,12 +17,16 @@ import javax.validation.constraints.NotBlank;
 public class Auth3Request {
     @NotBlank(message = "SessionId is required", groups = Auth3Validation.class)
     private String sessionId;
+
     @NotBlank(message = "Username is required", groups = Auth3Validation.class)
     private String username;
+
     @NotBlank(message = "Otp is required", groups = Auth3Validation.class)
     private String otp;
+
     @NotBlank(message = "Transaction time is required", groups = Auth3Validation.class)
     private String transTime;
+
     @NotBlank(message = "Transaction id is required", groups = Auth3Validation.class)
     private String transId;
 }
