@@ -11,10 +11,10 @@ import com.kaiasia.app.register.KaiService;
 import com.kaiasia.app.register.Register;
 import com.kaiasia.app.service.Auth_api.dao.IAuthOTPDao;
 import com.kaiasia.app.service.Auth_api.dao.SessionIdDAO;
-import com.kaiasia.app.service.Auth_api.dto.GetOTPResponse;
-import com.kaiasia.app.service.Auth_api.kafka.getOTP.KafkaUtilsForGetOTP;
-import com.kaiasia.app.service.Auth_api.model.Auth2InsertDb;
-import com.kaiasia.app.service.Auth_api.model.Auth2Request;
+import com.kaiasia.app.service.Auth_api.model.response.Auth2Response;
+import com.kaiasia.app.service.Auth_api.utils.KafkaUtils;
+import com.kaiasia.app.service.Auth_api.model.entity.Auth2InsertDb;
+import com.kaiasia.app.service.Auth_api.model.request.Auth2Request;
 import com.kaiasia.app.service.Auth_api.utils.AuthTakeSession;
 import com.kaiasia.app.service.Auth_api.utils.OtpUtils;
 import com.kaiasia.app.service.Auth_api.utils.StatusOTPEnum;
@@ -50,7 +50,7 @@ public class GetOTPService extends BaseService {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private KafkaUtilsForGetOTP kafkaUtils;
+    private KafkaUtils kafkaUtils;
 
     @Autowired
     private T24UtilClient t24UtilClient;
@@ -170,7 +170,7 @@ public class GetOTPService extends BaseService {
         log.info("SEND TO KAFKA");
         kafkaUtils.sendMessage(auth2Request.getGmail(), generateOTP);
 
-        GetOTPResponse response = new GetOTPResponse();
+        Auth2Response response = new Auth2Response();
         response.setResponseCode("00");
         response.setTransId(generateTransID);
         ApiBody apiBody = new ApiBody();

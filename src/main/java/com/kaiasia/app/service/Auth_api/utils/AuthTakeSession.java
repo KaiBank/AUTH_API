@@ -1,14 +1,13 @@
 package com.kaiasia.app.service.Auth_api.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kaiasia.app.core.job.BaseService;
 import com.kaiasia.app.core.job.Enquiry;
 import com.kaiasia.app.core.utils.ApiConstant;
 import com.kaiasia.app.core.utils.GetErrorUtils;
 import com.kaiasia.app.service.Auth_api.api.takesession.TakeSessionService;
 import com.kaiasia.app.service.Auth_api.dao.SessionIdDAO;
-import com.kaiasia.app.service.Auth_api.dto.SessionResponse;
-import com.kaiasia.app.service.Auth_api.model.AuthSessionResponse;
+import com.kaiasia.app.service.Auth_api.model.response.SessionResponse;
+import com.kaiasia.app.service.Auth_api.model.response.Auth1Response;
 import ms.apiclient.model.ApiBody;
 import ms.apiclient.model.ApiError;
 import ms.apiclient.model.ApiResponse;
@@ -44,9 +43,9 @@ public class AuthTakeSession {
 
         String LOCATION = enquiry.getSessionId();
         // Lấy thông tin session từ DB
-        AuthSessionResponse authSessionResponse = null;
+        Auth1Response auth1Response = null;
         try {
-            authSessionResponse = sessionIdDAO.getAuthSessionId(enquiry.getSessionId());
+            auth1Response = sessionIdDAO.getAuthSessionId(enquiry.getSessionId());
         } catch (Exception e) {
             log.error("{}:{}", LOCATION, e.getMessage());
             ApiError apiError = apiErrorUtils.getError("503", new String[]{});
@@ -55,7 +54,7 @@ public class AuthTakeSession {
         }
 
         // Kiểm tra session có tồn tại không
-        if (authSessionResponse == null) {
+        if (auth1Response == null) {
             ApiError apiError = apiErrorUtils.getError("801", new String[]{enquiry.getSessionId()});
             log.info(LOCATION + "#END#Duration:" + (System.currentTimeMillis() - a));
             apiResponse.setError(apiError);
@@ -66,7 +65,7 @@ public class AuthTakeSession {
         //TODO check them: expireTime
         Date date = new Date();
         long now = date.getTime();
-        if (authSessionResponse.getEndTime().getTime() < now) {
+        if (auth1Response.getEndTime().getTime() < now) {
             ApiError apiError = apiErrorUtils.getError("810", new String[]{enquiry.getSessionId()});
             log.info(LOCATION + "#END#Duration:" + (System.currentTimeMillis() - a));
             apiResponse.setError(apiError);
@@ -91,8 +90,8 @@ public class AuthTakeSession {
 
         SessionResponse sessionResponse = SessionResponse.builder()
                 .responseCode("00")
-                .sessionId(authSessionResponse.getSessionId())
-                .username(authSessionResponse.getUsername())
+                .sessionId(auth1Response.getSessionId())
+                .username(auth1Response.getUsername())
                 .build();
         ApiBody apiBody = new ApiBody();
         apiBody.put(ApiConstant.COMMAND.ENQUIRY, sessionResponse);

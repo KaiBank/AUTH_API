@@ -1,6 +1,7 @@
-package com.kaiasia.app.service.Auth_api.model;
+package com.kaiasia.app.service.Auth_api.model.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.kaiasia.app.service.Auth_api.model.entity.SmsParams;
 import lombok.*;
 
 

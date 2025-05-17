@@ -1,4 +1,4 @@
-package com.kaiasia.app.service.Auth_api.model;
+package com.kaiasia.app.service.Auth_api.model.entity;
 
 import lombok.*;
 

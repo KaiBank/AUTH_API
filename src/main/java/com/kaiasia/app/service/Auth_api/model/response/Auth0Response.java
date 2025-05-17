@@ -1,9 +1,9 @@
-package com.kaiasia.app.service.Auth_api.dto;
+package com.kaiasia.app.service.Auth_api.model.response;
 
 import lombok.Data;
 
 @Data
-public class LoginResponse {
+public class Auth0Response {
 
     private String transId;
     private String sessionId;

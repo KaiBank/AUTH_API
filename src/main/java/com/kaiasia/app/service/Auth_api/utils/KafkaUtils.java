@@ -1,4 +1,4 @@
-package com.kaiasia.app.service.Auth_api.kafka.getOTP;
+package com.kaiasia.app.service.Auth_api.utils;
 
 import com.kaiasia.app.service.Auth_api.kafka.resetpwd.EmailMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.text.MessageFormat;
 
 @Component
-public class KafkaUtilsForGetOTP {
+public class KafkaUtils {
     @Autowired
     private KafkaTemplate<String, Object> kafkaTemplate;
 
@@ -21,7 +21,6 @@ public class KafkaUtilsForGetOTP {
 
     @Value("${kafka_getOTP.email.subject}")
     private String subject;
-
 
     public void sendMessage(String email, String resetCode) {
         EmailMessage message = new EmailMessage();

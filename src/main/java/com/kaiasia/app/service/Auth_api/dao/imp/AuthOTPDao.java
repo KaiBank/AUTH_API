@@ -4,20 +4,15 @@ package com.kaiasia.app.service.Auth_api.dao.imp;
 import com.kaiasia.app.core.dao.CommonDAO;
 import com.kaiasia.app.core.dao.PosgrestDAOHelper;
 import com.kaiasia.app.service.Auth_api.dao.IAuthOTPDao;
-import com.kaiasia.app.service.Auth_api.model.Auth2InsertDb;
-import com.kaiasia.app.service.Auth_api.model.Auth2Request;
-import com.kaiasia.app.service.Auth_api.model.Auth3Response;
-import com.kaiasia.app.service.Auth_api.model.OTP;
+import com.kaiasia.app.service.Auth_api.model.entity.Auth2InsertDb;
+import com.kaiasia.app.service.Auth_api.model.entity.OTP;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 @Slf4j
 public class AuthOTPDao extends CommonDAO implements IAuthOTPDao {

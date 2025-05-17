@@ -1,17 +1,21 @@
-package com.kaiasia.app.service.Auth_api.model;
+package com.kaiasia.app.service.Auth_api.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Auth3Response {
-    private String responseCode;
-    private String transId;
+public class EmailMessage {
+
+	private String email;
+
+	private String subject;
+
+	private String content;
+
+	private String notiKey;
 }

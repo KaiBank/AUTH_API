@@ -4,13 +4,10 @@ package com.kaiasia.app.service.Auth_api.utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kaiasia.app.core.job.BaseService;
 import com.kaiasia.app.core.utils.GetErrorUtils;
-import com.kaiasia.app.service.Auth_api.model.Auth3Request;
-import com.kaiasia.app.service.Auth_api.model.validation.Auth3Validation;
 import ms.apiclient.model.ApiBody;
 import ms.apiclient.model.ApiError;
 import ms.apiclient.model.ApiRequest;
 import ms.apiclient.model.ApiResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;

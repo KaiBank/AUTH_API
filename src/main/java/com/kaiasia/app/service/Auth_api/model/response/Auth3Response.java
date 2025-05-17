@@ -1,4 +1,4 @@
-package com.kaiasia.app.service.Auth_api.model;
+package com.kaiasia.app.service.Auth_api.model.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -11,8 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DataSendToKafka {
-    private String email;
-    private String subject;
-    private String content;
+public class Auth3Response {
+    private String responseCode;
+    private String transId;
 }

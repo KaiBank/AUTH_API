@@ -4,8 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.kaiasia.app.core.utils.ApiConstant;
-import com.kaiasia.app.service.Auth_api.dto.LoginResponse;
-import com.kaiasia.app.service.Auth_api.model.AuthSessionRequest;
+import com.kaiasia.app.service.Auth_api.model.request.Auth1Request;
+import com.kaiasia.app.service.Auth_api.model.response.Auth0Response;
 import com.kaiasia.app.service.Auth_api.utils.ApiUtils;
 import ms.apiclient.model.ApiBody;
 import ms.apiclient.model.ApiError;
@@ -31,9 +31,6 @@ import com.kaiasia.app.service.Auth_api.dao.SessionIdDAO;
 import com.kaiasia.app.service.Auth_api.utils.SessionUtil;
 
 import lombok.extern.slf4j.Slf4j;
-import ms.apiclient.t24util.T24LoginResponse;
-import ms.apiclient.t24util.T24Request;
-import ms.apiclient.t24util.T24UtilClient;
 
 @KaiService
 @Slf4j
@@ -120,17 +117,17 @@ public class LoginService  extends BaseService{
            String sessionID = sessionUtil.createCustomerSessionId(customerId);
 
            // Lưu session vào cơ sở dữ liệu
-           AuthSessionRequest sessionRequest = AuthSessionRequest.builder()
-                   .sessionId(sessionID)
-                   .startTime(startTime)
-                   .endTime(endTime)
-                   .channel(req.getHeader().getChannel())
-                   .phone(loginResponse.getPhone())
-                   .customerId(customerId)
-                   .companyCode(loginResponse.getCompanyCode())
-                   .location(req.getHeader().getLocation())
-                   .username(loginResponse.getUsername())
-                   .build();
+           Auth1Request sessionRequest = Auth1Request.builder()
+													 .sessionId(sessionID)
+													 .startTime(startTime)
+													 .endTime(endTime)
+													 .channel(req.getHeader().getChannel())
+													 .phone(loginResponse.getPhone())
+													 .customerId(customerId)
+													 .companyCode(loginResponse.getCompanyCode())
+													 .location(req.getHeader().getLocation())
+													 .username(loginResponse.getUsername())
+													 .build();
 
            int result = sessionIdDAO.insertSessionId(sessionRequest);
            if(result == 0){
@@ -141,7 +138,7 @@ public class LoginService  extends BaseService{
            }
 
            // Tạo phản hồi thành công
-           LoginResponse response = new LoginResponse();
+           Auth0Response response = new Auth0Response();
            response.setTransId(sessionID);
            response.setResponseCode("00");
            response.setSessionId(sessionID);

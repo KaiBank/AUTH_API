@@ -1,17 +1,14 @@
-package com.kaiasia.app.service.Auth_api.model;
-
+package com.kaiasia.app.service.Auth_api.model.response;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.Date;
-
-@Setter
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class AuthSessionRequest {
+public class Auth1Response {
     private String username;
     private Date startTime;
     private Date endTime;
@@ -22,5 +19,4 @@ public class AuthSessionRequest {
     private String email;
     private String companyCode;
     private String customerId;
-    
 }

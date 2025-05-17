@@ -2,16 +2,14 @@ package com.kaiasia.app.service.Auth_api.api.api_confirmOTP;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kaiasia.app.core.job.BaseService;
-import com.kaiasia.app.core.job.Enquiry;
-import com.kaiasia.app.core.utils.ApiConstant;
 import com.kaiasia.app.core.utils.GetErrorUtils;
 import com.kaiasia.app.register.KaiMethod;
 import com.kaiasia.app.register.KaiService;
 import com.kaiasia.app.register.Register;
 import com.kaiasia.app.service.Auth_api.dao.IAuthOTPDao;
-import com.kaiasia.app.service.Auth_api.model.Auth3Request;
-import com.kaiasia.app.service.Auth_api.model.Auth3Response;
-import com.kaiasia.app.service.Auth_api.model.OTP;
+import com.kaiasia.app.service.Auth_api.model.request.Auth3Request;
+import com.kaiasia.app.service.Auth_api.model.response.Auth3Response;
+import com.kaiasia.app.service.Auth_api.model.entity.OTP;
 import com.kaiasia.app.service.Auth_api.model.validation.Auth3Validation;
 import com.kaiasia.app.service.Auth_api.utils.AuthTakeSession;
 import com.kaiasia.app.service.Auth_api.utils.ServiceUltil;
@@ -19,11 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 import ms.apiclient.model.ApiError;
 import ms.apiclient.model.ApiRequest;
 import ms.apiclient.model.ApiResponse;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
 
 import static com.kaiasia.app.service.Auth_api.utils.ServiceUltil.takeRespose;
 
