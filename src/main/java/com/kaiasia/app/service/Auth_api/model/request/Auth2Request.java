@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.kaiasia.app.service.Auth_api.model.entity.SmsParams;
 import lombok.*;
 
-
 @Getter
 @Setter
 @AllArgsConstructor

@@ -2,7 +2,6 @@ package com.kaiasia.app.service.Auth_api.api.getOTP;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
 import com.kaiasia.app.core.job.BaseService;
 import com.kaiasia.app.core.utils.ApiConstant;
 import com.kaiasia.app.core.utils.GetErrorUtils;
@@ -11,13 +10,12 @@ import com.kaiasia.app.register.KaiService;
 import com.kaiasia.app.register.Register;
 import com.kaiasia.app.service.Auth_api.dao.IAuthOTPDao;
 import com.kaiasia.app.service.Auth_api.dao.SessionIdDAO;
+import com.kaiasia.app.service.Auth_api.model.request.Auth2RequestValidate;
 import com.kaiasia.app.service.Auth_api.model.response.Auth2Response;
-import com.kaiasia.app.service.Auth_api.utils.KafkaUtils;
+import com.kaiasia.app.service.Auth_api.model.validation.Auth2Validation;
+import com.kaiasia.app.service.Auth_api.utils.*;
 import com.kaiasia.app.service.Auth_api.model.entity.Auth2InsertDb;
 import com.kaiasia.app.service.Auth_api.model.request.Auth2Request;
-import com.kaiasia.app.service.Auth_api.utils.AuthTakeSession;
-import com.kaiasia.app.service.Auth_api.utils.OtpUtils;
-import com.kaiasia.app.service.Auth_api.utils.StatusOTPEnum;
 import lombok.extern.slf4j.Slf4j;
 import ms.apiclient.model.ApiBody;
 import ms.apiclient.model.ApiError;
@@ -26,7 +24,6 @@ import ms.apiclient.model.ApiResponse;
 import ms.apiclient.t24util.T24Request;
 import ms.apiclient.t24util.T24UserInfoResponse;
 import ms.apiclient.t24util.T24UtilClient;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -66,35 +63,7 @@ public class GetOTPService extends BaseService {
 
     @KaiMethod(name = "getOTP", type = Register.VALIDATE)
     public ApiError validate(ApiRequest req) {
-
-        Auth2Request enquiry = objectMapper.convertValue(getEnquiry(req), Auth2Request.class);
-
-        if (StringUtils.isBlank(enquiry.getSessionId())) {
-            return apiErrorUtils.getError("706", new String[]{"sessionId"});
-        }
-
-        if (StringUtils.isBlank(enquiry.getUsername())) {
-            return apiErrorUtils.getError("706", new String[]{"username"});
-        }
-
-        if (StringUtils.isBlank(enquiry.getGmail())) {
-            return apiErrorUtils.getError("706", new String[]{"gmail"});
-        }
-
-        if (StringUtils.isBlank(enquiry.getTransTime())) {
-            return apiErrorUtils.getError("706", new String[]{"transTime"});
-        }
-
-        if (StringUtils.isBlank(enquiry.getTransId())) {
-            return apiErrorUtils.getError("706", new String[]{"transId"});
-        }
-
-        if (StringUtils.isBlank(enquiry.getTransInfo())) {
-            return apiErrorUtils.getError("706", new String[]{"transDesc"});
-        }
-
-
-        return new ApiError(ApiError.OK_CODE, ApiError.OK_DESC);
+		return ServiceUltil.validate(req, Auth2RequestValidate.class, apiErrorUtils, "ENQUIRY", Auth2Validation.class);
     }
 
     @KaiMethod(name = "getOTP")
@@ -113,16 +82,14 @@ public class GetOTPService extends BaseService {
             log.info(LOCATION + "#END#Duration:" + (System.currentTimeMillis() - a));
             apiResponse.setError(apiError);
             return apiResponse;
-
         }
 
         log.info(LOCATION + "#BEGIN CALL USER INFO");
         T24UserInfoResponse t24UserInfoResponse = t24UtilClient.getUserInfo(
                 LOCATION,
-                T24Request
-                        .builder()
-                        .username(auth2Request.getUsername())
-                        .build(),
+                T24Request.builder()
+						  .username(auth2Request.getUsername())
+						  .build(),
                 req.getHeader()
         );
 
@@ -140,24 +107,23 @@ public class GetOTPService extends BaseService {
             return apiResponse;
         }
 
-
         String generateOTP = OtpUtils.generateValidateCode();
         String generateTransID = auth2Request.getTransId() + "-" +auth2Request.getUsername() + OtpUtils.generateTransID();
 
         Auth2InsertDb auth2InsertDb = Auth2InsertDb.builder()
-                .transId(generateTransID)
-                .validateCode(generateOTP)
-                .username(auth2Request.getUsername())
-                .sessionId(auth2Request.getSessionId())
-                .channel(req.getHeader().getChannel())
-                .location(req.getHeader().getLocation())
-                .startTime(Timestamp.valueOf(LocalDateTime.now()))
-                .endTime(Timestamp.valueOf(LocalDateTime.now().plusMinutes(expireTime)))
-                .status(String.valueOf(StatusOTPEnum.CONFIRM))
-                .transTime(auth2Request.getTransTime())
-                .transInfo(auth2Request.getTransInfo())
-                .confirmTime(Timestamp.valueOf(LocalDateTime.now()))
-                .build();
+												   .transId(generateTransID)
+												   .validateCode(generateOTP)
+												   .username(auth2Request.getUsername())
+												   .sessionId(auth2Request.getSessionId())
+												   .channel(req.getHeader().getChannel())
+												   .location(req.getHeader().getLocation())
+												   .startTime(Timestamp.valueOf(LocalDateTime.now()))
+												   .endTime(Timestamp.valueOf(LocalDateTime.now().plusMinutes(expireTime)))
+												   .status(String.valueOf(StatusOTPEnum.CONFIRM))
+												   .transTime(auth2Request.getTransTime())
+												   .transInfo(auth2Request.getTransInfo())
+												   .confirmTime(Timestamp.valueOf(LocalDateTime.now()))
+												   .build();
 
         int result = authOTPService.insertOTP(auth2InsertDb);
 
@@ -179,6 +145,5 @@ public class GetOTPService extends BaseService {
 
         log.info(LOCATION + "#END#Duration:" + (System.currentTimeMillis() - a));
         return apiResponse;
-
     }
 }
