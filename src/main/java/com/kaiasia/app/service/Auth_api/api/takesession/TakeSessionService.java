@@ -10,8 +10,11 @@ import com.kaiasia.app.register.KaiMethod;
 import com.kaiasia.app.register.KaiService;
 import com.kaiasia.app.register.Register;
 import com.kaiasia.app.service.Auth_api.dao.SessionIdDAO;
+import com.kaiasia.app.service.Auth_api.model.request.Auth1Request;
 import com.kaiasia.app.service.Auth_api.model.response.SessionResponse;
 import com.kaiasia.app.service.Auth_api.model.response.Auth1Response;
+import com.kaiasia.app.service.Auth_api.model.validation.Auth1Validation;
+import com.kaiasia.app.service.Auth_api.utils.ServiceUltil;
 import ms.apiclient.model.ApiBody;
 import ms.apiclient.model.ApiError;
 import ms.apiclient.model.ApiRequest;
@@ -29,9 +32,9 @@ import java.util.Date;
 
 @KaiService
 public class TakeSessionService extends BaseService {
-
     private static final Logger log = LoggerFactory.getLogger(TakeSessionService.class);
-    @Autowired
+
+	@Autowired
     private GetErrorUtils apiErrorUtils;
 
     @Autowired
@@ -39,26 +42,13 @@ public class TakeSessionService extends BaseService {
 
     @Autowired
     private ObjectMapper objectMapper;
-    
- 
 
-    
     @Value("${kai.time2live}")
     private int time2livee;
     
     @KaiMethod(name = "takeSession",type = Register.VALIDATE)
     public ApiError validate(ApiRequest apiRequest) throws  Exception{
-//    	   String time2 = evn.getProperty("time2live");
-//           int time2Live = Integer.valueOf(time2);
-        Enquiry enquiry = objectMapper.convertValue(getEnquiry(apiRequest), Enquiry.class);
-
-
-        if(StringUtils.isBlank(enquiry.getSessionId())){
-            return apiErrorUtils.getError("706",new String[]{"#sessionId"});
-        }
-
-
-        return new ApiError(ApiError.OK_CODE, ApiError.OK_DESC);
+		return ServiceUltil.validate(apiRequest, Auth1Request.class, apiErrorUtils, "ENQUIRY", Auth1Validation.class);
     }
     @KaiMethod(name = "takeSession")
     public ApiResponse process(ApiRequest apiRequest) throws Exception {
